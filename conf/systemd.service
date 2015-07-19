@@ -1,0 +1,14 @@
+[Unit]
+Description=Container Odoo
+Requires=docker.service
+After=docker.service
+
+[Service]
+ExecStartPre=-/usr/bin/docker start odoo-db
+ExecStartPre=-/usr/bin/docker attach odoo-db
+ExecStartPre=-/usr/bin/docker start odoo
+ExecStart=/usr/bin/docker attach odoo
+ExecStop=/usr/bin/docker stop odoo ; /usr/bin/docker stop odoo-db
+
+[Install]
+WantedBy=multi-user.target

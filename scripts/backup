@@ -1,0 +1,21 @@
+#! /bin/bash
+
+app=odoo
+
+# The parameter $1 is the backup directory location which will be compressed afterward
+	backup_dir=$1/apps/container-$app
+	mkdir -p $backup_dir
+
+# Backup container's volumes
+	echo 'Backing up Odoo'
+	sudo docker stop $app
+	sudo docker stop $app-db
+	docker run --rm --volumes-from $app -v $backup_dir:/backup odoo tar cvf /backup/container-$app.tar
+	docker run --rm --volumes-from $app-db -v $backup_dir:/backup postgres tar cvf /backup/container-$app-db.tar
+
+# Copy the systemd service and NGINX
+	sudo cp -a /etc/systemd/system/container-$app.service $backup_dir/container-$app.service
+	#Nginx TBD
+
+# Copy YunoHost parameters
+	sudo cp -a /etc/yunohost/apps/$app/. $backup_dir/yunohost

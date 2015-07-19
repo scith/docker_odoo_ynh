@@ -1,0 +1,70 @@
+#!/bin/bash
+
+# Retrieve arguments
+domain=$1
+is_public=$3
+
+# app -> your app name
+# repository -> your repository from http://registry.hub.docker.com
+# autostart -> "Yes" to make the container start at boot, "No" to disable
+# volume -> "Yes" to mount /home/yunohost.docker/container-app as /home/yunohost in the container
+# datacontainer -> "Yes" to use a data volume only container
+# command -> the command to run the container
+
+app=odoo
+repository="odoo"
+command="-p 127.0.0.1:8069:8069 --link odoo-db:db"
+
+sudo yunohost app checkport 8069
+if [[ ! $? -eq 0 ]]; then
+  exit 1
+fi
+
+
+# END OF SETUP. DO NOT MODIFY BELOW
+
+# Check domain/path availability
+domain=${domain}"/"
+sudo yunohost app checkurl $domain -a $app \
+	|| (echo "Path not available: $domain$path" && exit 1)
+
+# Remove trailing "/" for next commands
+domain=${domain%/}
+
+# Install Docker if it is not installed yet
+if [ -f /usr/bin/docker ]; then
+	echo "Docker is already installed"
+else
+	echo "Docker will now be installed"
+	sudo apt-get install curl -y -qq
+	sudo curl -sSL https://get.docker.com/ | sh
+	sudo yunohost service add docker
+	sudo update-rc.d docker defaults
+	sudo service docker start 
+	sudo usermod -aG docker admin
+	newgrp docker
+fi
+sudo service docker restart
+
+# Create Docker container
+sudo docker run -d -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo --name odoo-db postgres
+sudo docker run -d -p 127.0.0.1:8069:8069 --name odoo --link odoo-db:db -t odoo
+
+# Manage container as daemon with systemd - only compatible with Debian Jessie & YNH 2.2
+sudo cp ../conf/systemd.service /etc/systemd/system/container-$app.service
+sudo chmod 777 /etc/systemd/system/container-$app.service
+sudo systemctl enable /etc/systemd/system/container-$app.service
+sudo systemctl daemon-reload
+sudo yunohost service add container-$app
+
+# Configure Nginx and reload
+sed -i "s@PATHTOCHANGE@$path@g" ../conf/nginx.conf
+sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/$app.conf
+
+if [ "$is_public" = "Yes" ];
+then
+	sudo yunohost app setting $app skipped_uris -v "/"
+fi
+
+sudo service nginx reload
+echo $?

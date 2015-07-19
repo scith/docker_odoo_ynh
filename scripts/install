@@ -1,5 +1,5 @@
 #!/bin/bash
-app=odoo
+app=dockerodoo
 set -e
 
 # Retrieve arguments

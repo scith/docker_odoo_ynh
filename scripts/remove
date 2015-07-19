@@ -1,6 +1,6 @@
 #!/bin/bash
 
-app=odoo
+app=dockerodoo
 
 # Remove Docker container and systemd service but keep the pulled image and Docker
 	sudo yunohost service remove container-$app

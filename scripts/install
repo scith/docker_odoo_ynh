@@ -12,8 +12,6 @@ is_public=$3
 # command -> the command to run the container
 
 app=odoo
-repository="odoo"
-command="-p 127.0.0.1:8069:8069 --link odoo-db:db"
 
 sudo yunohost app checkport 8069
 if [[ ! $? -eq 0 ]]; then
@@ -30,7 +28,7 @@ sudo yunohost app checkurl $domain -a $app \
 
 # Remove trailing "/" for next commands
 domain=${domain%/}
-sudo yunohost app setting $app domain -v "$domain"
+sudo yunohost app setting $app domain -v $domain
 
 # Install Docker if it is not installed yet
 if [ -f /usr/bin/docker ]; then

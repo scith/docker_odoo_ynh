@@ -47,7 +47,6 @@ sudo systemctl daemon-reload
 sudo yunohost service add container-$app
 
 # Configure Nginx and reload
-sed -i "s@PATHTOCHANGE@$path@g" ../conf/nginx.conf
 sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/$app.conf
 
 if [ "$is_public" = "Yes" ];

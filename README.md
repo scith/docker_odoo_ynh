@@ -6,6 +6,8 @@ Warning: This YunoHost app is still in development. Use it at your own risk!
 https://odoo.example.com/ will work
 https://example.com/odoo/ will NOT work
 
+(Backup and restore does not work yet)
+
 
 Odoo
 ----

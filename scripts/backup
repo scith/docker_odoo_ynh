@@ -1,6 +1,6 @@
 #! /bin/bash
-
 app=dockerodoo
+set -e
 
 # The parameter $1 is the backup directory location which will be compressed afterward
 	backup_dir=$1/apps/container-$app
@@ -8,10 +8,11 @@ app=dockerodoo
 
 # Backup container's volumes
 	echo 'Backing up Odoo'
+	sudo service docker restart
 	sudo docker stop odoo
 	sudo docker stop odoodb
-	docker run --rm --volumes-from odoo -v $backup_dir:/backup odoo tar cvf /backup/container-odoo.tar
-	docker run --rm --volumes-from odoodb -v $backup_dir:/backup postgres tar cvf /backup/container-odoodb.tar
+	sudo docker run --rm --volumes-from odoo -v $backup_dir:/backup odoo tar cvf /backup/container-odoo.tar
+	sudo docker run --rm --volumes-from odoodb -v $backup_dir:/backup postgres tar cvf /backup/container-odoodb.tar
 
 # Copy the systemd service and NGINX
 	sudo cp -a /etc/systemd/system/container-$app.service $backup_dir/container-$app.service

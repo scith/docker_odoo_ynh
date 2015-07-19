@@ -26,10 +26,11 @@ fi
 # Check domain/path availability
 domain=${domain}"/"
 sudo yunohost app checkurl $domain -a $app \
-	|| (echo "Path not available: $domain$path" && exit 1)
+	|| (echo "Path not available: $domain" && exit 1)
 
 # Remove trailing "/" for next commands
 domain=${domain%/}
+sudo yunohost app setting $app domain -v "$domain"
 
 # Install Docker if it is not installed yet
 if [ -f /usr/bin/docker ]; then
@@ -47,8 +48,8 @@ fi
 sudo service docker restart
 
 # Create Docker container
-sudo docker run -d -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo --name odoo-db postgres
-sudo docker run -d -p 127.0.0.1:8069:8069 --name odoo --link odoo-db:db -t odoo
+sudo docker run -d -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo --name odoodb postgres
+sudo docker run -d -p 127.0.0.1:8069:8069 --name odoo --link odoodb:db -t odoo
 
 # Manage container as daemon with systemd - only compatible with Debian Jessie & YNH 2.2
 sudo cp ../conf/systemd.service /etc/systemd/system/container-$app.service

@@ -8,10 +8,10 @@ app=odoo
 
 # Backup container's volumes
 	echo 'Restoring Odoo'
-	sudo docker stop $app
-	sudo docker stop $app-db
-	docker run --rm --volumes-from $app -v $backup_dir:/backup odoo tar xvf /backup/container-$app.tar
-	docker run --rm --volumes-from $app-db -v $backup_dir:/backup postgres tar xvf /backup/container-$app-db.tar
+	sudo docker stop odoo
+	sudo docker stop odoodb
+	docker run --rm --volumes-from odoo -v $backup_dir:/backup odoo tar xvf /backup/container-odoo.tar
+	docker run --rm --volumes-from odoodb -v $backup_dir:/backup postgres tar xvf /backup/container-odoodb.tar
 
 # Restore the systemd service and nginx
 	sudo cp -a $backup_dir/container-$app.service /etc/systemd/system/container-$app.service

@@ -8,10 +8,10 @@ app=odoo
 
 # Backup container's volumes
 	echo 'Backing up Odoo'
-	sudo docker stop $app
-	sudo docker stop $app-db
-	docker run --rm --volumes-from $app -v $backup_dir:/backup odoo tar cvf /backup/container-$app.tar
-	docker run --rm --volumes-from $app-db -v $backup_dir:/backup postgres tar cvf /backup/container-$app-db.tar
+	sudo docker stop odoo
+	sudo docker stop odoodb
+	docker run --rm --volumes-from odoo -v $backup_dir:/backup odoo tar cvf /backup/container-odoo.tar
+	docker run --rm --volumes-from odoodb -v $backup_dir:/backup postgres tar cvf /backup/container-odoodb.tar
 
 # Copy the systemd service and NGINX
 	sudo cp -a /etc/systemd/system/container-$app.service $backup_dir/container-$app.service

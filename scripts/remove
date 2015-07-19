@@ -6,10 +6,10 @@ app=odoo
 	sudo yunohost service remove container-$app
 	sudo rm /etc/systemd/system/container-$app.service
 
-	sudo docker stop $app
-	sudo docker rm $app
-	sudo docker stop $app-db
-	sudo docker rm $app-db
+	sudo docker stop odoo
+	sudo docker rm odoo
+	sudo docker stop odoodb
+	sudo docker rm odoodb
 
 # Remove NGINX conf
 	domain=$(sudo yunohost app setting $app domain)

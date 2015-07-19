@@ -1,25 +1,15 @@
 #!/bin/bash
+app=odoo
+set -e
 
 # Retrieve arguments
 domain=$1
-is_public=$3
-
-# app -> your app name
-# repository -> your repository from http://registry.hub.docker.com
-# autostart -> "Yes" to make the container start at boot, "No" to disable
-# volume -> "Yes" to mount /home/yunohost.docker/container-app as /home/yunohost in the container
-# datacontainer -> "Yes" to use a data volume only container
-# command -> the command to run the container
-
-app=odoo
+is_public=$2
 
 sudo yunohost app checkport 8069
 if [[ ! $? -eq 0 ]]; then
   exit 1
 fi
-
-
-# END OF SETUP. DO NOT MODIFY BELOW
 
 # Check domain/path availability
 domain=${domain}"/"

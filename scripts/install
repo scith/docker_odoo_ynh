@@ -29,11 +29,12 @@ else
 	sudo curl -sSL https://get.docker.com/ | sh
 	sudo yunohost service add docker
 	sudo update-rc.d docker defaults
-	sudo service docker start 
 	sudo usermod -aG docker admin
 	newgrp docker
+	sudo service docker start 
 fi
-sudo service docker restart
+sudo yunohost service stop docker
+sudo yunohost service start docker
 
 # Create Docker container
 sudo docker run -d -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo --name odoodb postgres

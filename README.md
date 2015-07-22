@@ -1,7 +1,10 @@
 Dockerized Odoo for YunoHost
 ----------------------------
 Warning: This YunoHost app is still in development. Use it at your own risk!
+
+
 **WARNING**: Odoo is a complex app. **DO NOT USE IT** to run your business unless you know what you are doing!!! If you don't, use <a href="https://www.odoo.com/fr_FR/pricing-online#num_users=1&custom_apps=0">the hosted Odoo</a> that will give you peace and customer support!
+
 
 **Important:** This app MUST be installed on a domain's root!
 https://odoo.example.com/ will work

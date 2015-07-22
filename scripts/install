@@ -27,11 +27,14 @@ else
 	echo "Docker will now be installed"
 	sudo apt-get install curl -y -qq
 	sudo curl -sSL https://get.docker.com/ | sh
-	sudo yunohost service add docker
-	sudo update-rc.d docker defaults
 	sudo usermod -aG docker admin
 	newgrp docker
-	sudo service docker start 
+	sudo yunohost service add docker
+	if [ -d /run/systemd/system ]; then
+		sudo systemctl enable docker
+	else
+		sudo update-rc.d docker defaults
+	fi
 fi
 sudo yunohost service stop docker
 sudo yunohost service start docker
@@ -40,12 +43,14 @@ sudo yunohost service start docker
 sudo docker run -d -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo --name odoodb postgres
 sudo docker run -d -p 127.0.0.1:8069:8069 --name odoo --link odoodb:db -t odoo
 
-# Manage container as daemon with systemd - only compatible with Debian Jessie & YNH 2.2
-sudo cp ../conf/systemd.service /etc/systemd/system/container-$app.service
-sudo chmod 777 /etc/systemd/system/container-$app.service
-sudo systemctl enable /etc/systemd/system/container-$app.service
-sudo systemctl daemon-reload
-sudo yunohost service add container-$app
+# Manage container as daemon with systemd
+if [ -d /run/systemd/system ]; then
+	sudo cp ../conf/systemd.service /etc/systemd/system/container-$app.service
+	sudo chmod 777 /etc/systemd/system/container-$app.service
+	sudo systemctl enable /etc/systemd/system/container-$app.service
+	sudo systemctl daemon-reload
+	sudo yunohost service add container-$app
+fi
 
 # Configure Nginx and reload
 sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/$app.conf

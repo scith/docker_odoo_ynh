@@ -25,3 +25,17 @@ The main Odoo Apps include an <a href="https://www.odoo.com/page/crm">Open Sourc
 
 Odoo Apps can be used as stand-alone applications, but they also integrate seamlessly so you get
 a full-featured <a href="https://www.odoo.com">Open Source ERP</a> when you install several Apps.
+
+Install procedure
+----
+First, you should add the subdomain to you yunohost configuration. For instance, we use odoo.domain.org.
+ _Domain creation failed at some point when it has been done from the web adminstration inteface._
+```sudo yunohost domain add odoo.domain.org```
+Then you can run
+```sudo yunohost install https://github.com/scith/docker_odoo_ynh.git```
+You will be asked for the domain
+```Choisissez un domaine pour Odoo (Odoo sera installé dans sa racine !) : odoo.domain.org```
+You will be asked if it's a public instance (Direct acces without yunohost authentification). Be carefull because your website will be exposed and you should modify the default passwords.
+
+ Then, it should work, you just need to got to
+ odoo.domain.org to access to the database management page.

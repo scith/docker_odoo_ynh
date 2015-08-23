@@ -20,9 +20,13 @@ http://your_server_IP:8069 **should be used for critical features such as instal
 What does not work
 ------------------
 Several features of Odoo DO NOT work if you access Odoo via _domain.tld_ instead of _http://severIP:8069_ (e.g., backup/restore the database, install big modules...). This is because Odoo is not optimized to run behing Nginx.
+
 Backup and restore
+
 Login via YunoHost (you have to create user accounts in Odoo)
+
 Autostart at server restart *might* not work
+
 
 Odoo
 ----

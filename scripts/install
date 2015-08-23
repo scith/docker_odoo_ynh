@@ -40,7 +40,7 @@ sudo yunohost service start docker
 
 # Create Docker container
 sudo docker run -d --restart always -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo --name odoodb postgres
-sudo docker run -d --restart always -p 127.0.0.1:8069:8069 --name odoo --link odoodb:db -t odoo
+sudo docker run -d --restart always -p 8069:8069 --name odoo --link odoodb:db -t odoo
 
 # Manage container as daemon with systemd
 if [ -d /run/systemd/system ]; then

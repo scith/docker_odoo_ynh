@@ -36,6 +36,7 @@ else
 		sudo update-rc.d docker defaults
 	fi
 fi
+sudo yunohost service stop docker
 sudo yunohost service start docker
 
 # Create Docker container

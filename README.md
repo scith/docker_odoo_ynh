@@ -49,7 +49,7 @@ You could do these steps from the admin panel (create a domain, install the app)
 
 Then you can run
 
-```sudo yunohost install https://github.com/scith/docker_odoo_ynh --label="Odoo"```
+```sudo yunohost app install https://github.com/scith/docker_odoo_ynh --label="Odoo"```
 
 You will be asked for the domain
 

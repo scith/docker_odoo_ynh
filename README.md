@@ -1,3 +1,5 @@
+**This app is not maintainted anymore. Please use <a href="https://github.com/scith/odoo_ynh">this new repository for a YunoHost native Odoo</a>**
+
 Dockerized Odoo for YunoHost
 ----------------------------
 Warning: This YunoHost app is still in development. Use it at your own risk! I am **not** responsible for any data loss that jeopardizes your organization
